@@ -1,0 +1,12 @@
+body {
+    color: white;
+    background-color: rgb(27, 27, 27);
+    
+}
+input {
+    text-align: center;
+    width: 15%;
+    height: 15%;
+    font-size: 10vw;
+    background-color: white;
+}
