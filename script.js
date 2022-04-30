@@ -109,47 +109,24 @@ function process() {
     var possibleWords = [];
     for (const word of _words) {
         // Eliminate words that contain a letter that we know is not in final word
-        var skipThisWord = false;
-        for (const letter of lettersNotPresent) {
-            if (word.includes(letter)) {
-                skipThisWord = true;
-                break;
-            }
+        if (wordContainsAnyLetter(word, lettersNotPresent)) {
+            continue;
         }
-        if (skipThisWord) continue;
 
         // Eliminate words that don't have the right letters somewhere in them
-        skipThisWord = true;
-        for (const letter of lettersPresent) {
-            if (word.includes(letter)) {
-                skipThisWord = false;
-                break;
-            }
+        if (!wordContainsAllLetters(word, lettersPresent)) {
+            continue;
         }
-        if (skipThisWord) continue;
 
-        // Eliminate words that don't have the right letters in the right positions
-        skipThisWord = false;
-        for (let [pos, letter] of lettersPositionKnown) {
-            if (word[pos - 1] != letter) {
-                skipThisWord = true;
-                break;
-            }
+        // Eliminate words that don't have the right letters in the known positions
+        if(!wordContainsAllLettersInPositions(word, lettersPositionKnown)){
+            continue;
         }
-        if (skipThisWord) continue;
 
         // Eliminate words have the right letters in the wrong positions
-        skipThisWord = false;
-        for (let [pos, letters] of lettersPositionNot) {
-            for (const letter of letters) {
-                if (word[pos - 1] == letter) {
-                    skipThisWord = true;
-                    break;
-                }
-            }
-            if (skipThisWord) break;
+        if(wordContainsAnyLettersInPositions(word, lettersPositionNot)){
+            continue;
         }
-        if (skipThisWord) continue;
 
         // If we get here, this is a possible solution
         possibleWords.push(word);
@@ -165,6 +142,50 @@ function process() {
         }
     }
     div.innerHTML = text;
+}
+
+//*************************************************************************************************
+//*************************************************************************************************
+function wordContainsAnyLetter(word, letters) {
+    for (const letter of letters) {
+        if (word.includes(letter)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+//*************************************************************************************************
+//*************************************************************************************************
+function wordContainsAllLetters(word, letters) {
+    for (const letter of letters) {
+        if (!word.includes(letter)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+//*************************************************************************************************
+//*************************************************************************************************
+function wordContainsAllLettersInPositions(word, letterPositionMap) {
+    for (let [pos, letter] of letterPositionMap) {
+        if (word[pos - 1] != letter) {
+            return false;
+        }
+    }
+    return true;
+}
+
+//*************************************************************************************************
+//*************************************************************************************************
+function wordContainsAnyLettersInPositions(word, letterPositionMap) {
+    for (let [pos, letter] of letterPositionMap) {
+        if (word[pos - 1] == letter) {
+            return true;
+        }
+    }
+    return false;
 }
 
 // The dictionary.  Not sure how complete it is, compiled from various online sources.
