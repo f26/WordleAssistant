@@ -1,2 +1,2 @@
 # WordleAssistant
-An assistant to help you solve Wordle puzzles.
+An assistant to help you ~~cheat at~~ **solve** Wordle puzzles.
