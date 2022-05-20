@@ -4,11 +4,27 @@ let _numCols = 5;
 //*************************************************************************************************
 //*************************************************************************************************
 function initialize() {
-    // Create the input text boxes
+
+    // Adjust rows if necessary
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    var numRows = urlParams.get('rows');
+    if(numRows != null)
+    {
+        _numRows = numRows;
+    }
+
     for (var row = 0; row < _numRows; row++) {
+        // Create the rows that will contain the input boxes
+        var span = document.getElementById("rowsGoHere");
+        var newRow = document.createElement("div");
+        newRow.setAttribute("id", "row" + row);
+        span.appendChild(newRow);
+
+        // Create the input text boxes
         var div = document.getElementById("row" + row);
         for (var col = 0; col < _numCols; col++) {
-            var newRow = document.createElement("input");
+            newRow = document.createElement("input");
             var id = "row" + row + "col" + col;
             newRow.setAttribute("id", id);
             newRow.setAttribute("type", "text");
